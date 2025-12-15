@@ -36,26 +36,26 @@ def test_airtable_connection():
     """Airtable 연결 및 기본 CRUD 테스트"""
 
     print("=" * 60)
-    print("🔍 Airtable 연결 테스트 시작")
+    print("[TEST] Airtable 연결 테스트 시작")
     print("=" * 60)
 
     # 환경 변수 확인
-    print(f"\n📌 환경 변수 확인:")
-    print(f"   AIRTABLE_PAT: {AIRTABLE_PAT[:20]}..." if AIRTABLE_PAT else "   ❌ AIRTABLE_PAT 없음")
+    print(f"\n[INFO] 환경 변수 확인:")
+    print(f"   AIRTABLE_PAT: {AIRTABLE_PAT[:20]}..." if AIRTABLE_PAT else "   [ERROR] AIRTABLE_PAT 없음")
     print(f"   AIRTABLE_BASE_ID: {AIRTABLE_BASE_ID}")
 
     if not AIRTABLE_PAT or not AIRTABLE_BASE_ID:
-        print("\n❌ .env 파일에 AIRTABLE_PAT 또는 AIRTABLE_BASE_ID가 없습니다!")
+        print("\n[ERROR] .env 파일에 AIRTABLE_PAT 또는 AIRTABLE_BASE_ID가 없습니다!")
         print("   .env 파일을 확인해주세요.")
         return False
 
     try:
         # API 초기화
-        print("\n🔌 Airtable API 초기화 중...")
+        print("\n Airtable API 초기화 중...")
         api = Api(AIRTABLE_PAT)
 
         # tiktok_trends 테이블 연결
-        print("📊 tiktok_trends 테이블 연결 중...")
+        print(" tiktok_trends 테이블 연결 중...")
         table = api.table(AIRTABLE_BASE_ID, 'tiktok_trends')
 
         # 테스트 레코드 데이터
@@ -72,18 +72,18 @@ def test_airtable_connection():
         }
 
         # 1. CREATE: 테스트 레코드 생성
-        print("\n✍️  테스트 레코드 생성 중...")
+        print("\n  테스트 레코드 생성 중...")
         test_record = table.create(test_data)
         record_id = test_record['id']
-        print(f"✅ 테스트 레코드 생성 성공!")
+        print(f" 테스트 레코드 생성 성공!")
         print(f"   Record ID: {record_id}")
         print(f"   Keyword: {test_record['fields']['keyword']}")
         print(f"   Trend Score: {test_record['fields']['trend_score']}")
 
         # 2. READ: 데이터 조회
-        print("\n📖 데이터 조회 중...")
+        print("\n 데이터 조회 중...")
         records = table.all(max_records=5)
-        print(f"✅ 데이터 조회 성공! (총 {len(records)}개 레코드)")
+        print(f" 데이터 조회 성공! (총 {len(records)}개 레코드)")
 
         if len(records) > 0:
             print("\n   최근 레코드:")
@@ -94,15 +94,15 @@ def test_airtable_connection():
                 print(f"   {i}. {keyword} (Score: {score})")
 
         # 3. DELETE: 테스트 레코드 삭제
-        print(f"\n🗑️  테스트 레코드 삭제 중... (ID: {record_id})")
+        print(f"\n  테스트 레코드 삭제 중... (ID: {record_id})")
         table.delete(record_id)
-        print("✅ 테스트 레코드 삭제 완료!")
+        print(" 테스트 레코드 삭제 완료!")
 
         # 성공 메시지
         print("\n" + "=" * 60)
-        print("🎉 Airtable 연결 테스트 통과!")
+        print(" Airtable 연결 테스트 통과!")
         print("=" * 60)
-        print("\n✅ 다음 단계:")
+        print("\n 다음 단계:")
         print("   1. Python 가상환경 설정")
         print("   2. Docker 설치 및 n8n 실행")
         print("   3. 에이전트 1 개발 시작 (Day 1-2)")
@@ -112,10 +112,10 @@ def test_airtable_connection():
 
     except Exception as e:
         print("\n" + "=" * 60)
-        print("❌ Airtable 연결 테스트 실패!")
+        print(" Airtable 연결 테스트 실패!")
         print("=" * 60)
         print(f"\n에러 내용: {str(e)}")
-        print("\n🔍 문제 해결 방법:")
+        print("\n 문제 해결 방법:")
         print("   1. .env 파일에 AIRTABLE_PAT이 올바른지 확인")
         print("   2. AIRTABLE_BASE_ID가 올바른지 확인")
         print("   3. Airtable 테이블 이름이 'tiktok_trends'인지 확인")
@@ -130,7 +130,7 @@ def test_research_news_table():
     """research_news 테이블 연결 테스트"""
 
     print("=" * 60)
-    print("🔍 research_news 테이블 테스트 시작")
+    print(" research_news 테이블 테스트 시작")
     print("=" * 60)
 
     try:
@@ -149,21 +149,21 @@ def test_research_news_table():
             "notes": "자동 생성/삭제됩니다."
         }
 
-        print("\n✍️  테스트 레코드 생성 중...")
+        print("\n  테스트 레코드 생성 중...")
         test_record = table.create(test_data)
         record_id = test_record['id']
-        print(f"✅ 레코드 생성 성공! (ID: {record_id})")
+        print(f" 레코드 생성 성공! (ID: {record_id})")
 
         # 삭제
-        print("🗑️  테스트 레코드 삭제 중...")
+        print("  테스트 레코드 삭제 중...")
         table.delete(record_id)
-        print("✅ 삭제 완료!")
+        print(" 삭제 완료!")
 
-        print("\n🎉 research_news 테이블 테스트 통과!\n")
+        print("\n research_news 테이블 테스트 통과!\n")
         return True
 
     except Exception as e:
-        print(f"\n❌ research_news 테이블 테스트 실패: {str(e)}\n")
+        print(f"\n research_news 테이블 테스트 실패: {str(e)}\n")
         return False
 
 
